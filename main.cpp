@@ -13,30 +13,24 @@ int main(){
     float ballRad = 10.f;
     
     // Create the window
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight, 32), "Ping Pong");
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight, 30), "Ping Pong");
     window.setVerticalSyncEnabled(true);
     
     // Create the ball
     sf::CircleShape ball;
     ball.setRadius(ballRad - 3);
-    ball.setOutlineThickness(3);
-    ball.setOutlineColor(sf::Color::White);
     ball.setFillColor(sf::Color::White);
     ball.setOrigin(ballRad / 2, ballRad / 2);
     
     // Create the right paddle
     sf::RectangleShape rightPaddle;
     rightPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
-    rightPaddle.setOutlineThickness(3);
-    rightPaddle.setOutlineColor(sf::Color::White);
     rightPaddle.setFillColor(sf::Color::Red);
     rightPaddle.setOrigin(paddleSize / 2.f);
     
     // Create the left paddle
     sf::RectangleShape leftPaddle;
     leftPaddle.setSize(paddleSize - sf::Vector2f(3, 3));
-    leftPaddle.setOutlineThickness(3);
-    leftPaddle.setOutlineColor(sf::Color::White);
     leftPaddle.setFillColor(sf::Color::Blue);
     leftPaddle.setOrigin(paddleSize / 2.f);
     
@@ -51,12 +45,12 @@ int main(){
         return EXIT_FAILURE;
     
     // Start Menu
-    sf::Text pauseMessage;
-    pauseMessage.setFont(font);
-    pauseMessage.setCharacterSize(40);
-    pauseMessage.setPosition(170.f, 150.f);
-    pauseMessage.setFillColor(sf::Color::White);
-    pauseMessage.setString("Press the space bar to begin");
+    sf::Text message;
+    message.setFont(font);
+    message.setCharacterSize(35);
+    message.setPosition(150.f, 150.f);
+    message.setFillColor(sf::Color::White);
+    message.setString("Press the space bar to begin");
     
     sf::Clock clock;
     bool isPlaying = false;
@@ -66,8 +60,8 @@ int main(){
         sf::Event event;
         while (window.pollEvent(event)){
             
-            // When window is closed or escape key pressed -> exit
-            if ((event.type == sf::Event::Closed) || ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))){
+            // When closed -> exit
+            if (event.type == sf::Event::Closed){
                 window.close();
                 break;
             }
@@ -119,11 +113,11 @@ int main(){
             // Check for winner
             if (ball.getPosition().x - ballRad < 0.f){
                 isPlaying = false;
-                pauseMessage.setString("Red Won!\nPress the space bar to start over \nor press escape to quit");
+                message.setString("Red Won!\nPress the space bar to start over");
             }
             if (ball.getPosition().x + ballRad > windowWidth){
                 isPlaying = false;
-                pauseMessage.setString("Blue won!\nPress the space bar to start over \nor press escape to quit");
+                message.setString("Blue won!\nPress the space bar to start over");
             }
             if (ball.getPosition().y - ballRad < 0.f){
                 ballAngle = -ballAngle;
@@ -175,7 +169,7 @@ int main(){
             window.draw(ball);
         } else{
             // Draw the menu
-            window.draw(pauseMessage);
+            window.draw(message);
         }
         // Display screen
         window.display();
